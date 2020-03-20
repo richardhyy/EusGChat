@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="EusGChat:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EusGChat_jar</output-path>
+    <root id="archive" name="EusGChat.jar">
+      <element id="module-output" name="EusGChat" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/bungee.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/config.yml" />
+    </root>
+  </artifact>
+</component>
