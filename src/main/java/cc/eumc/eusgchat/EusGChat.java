@@ -72,9 +72,15 @@ public final class EusGChat extends Plugin implements Listener {
             return;
         }
 
+        if (PluginConfig.BYPASS_MSG_PATTERN != null) {
+            if (PluginConfig.BYPASS_MSG_PATTERN.matcher(e.getMessage()).matches()) return;
+        }
+
+        String serverIndicator = String.valueOf(player.getServer().getInfo().getName().charAt(0)).toUpperCase();
+
         TextComponent base = new TextComponent();
 
-        TextComponent prefix = new TextComponent(PluginConfig.CHAT_FORMAT_SERVER_INDICATOR.replace("{server}", String.valueOf(player.getServer().getInfo().getName().charAt(0)).toUpperCase()));
+        TextComponent prefix = new TextComponent(PluginConfig.CHAT_FORMAT_SERVER_INDICATOR.replace("{server}", serverIndicator));
         prefix.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(player.getServer().getInfo().getName()).create()));
         base.addExtra(prefix);
 
@@ -92,7 +98,7 @@ public final class EusGChat extends Plugin implements Listener {
         if (PluginConfig.Sending_Enabled) {
             getProxy().getScheduler().schedule(this, () -> {
                 for (String webhookURL : PluginConfig.Sending_Webhooks) {
-                    sendMessageToWebhook(webhookURL, player.getName(), e.getMessage());
+                    sendMessageToWebhook(webhookURL, player.getName(), e.getMessage(), serverIndicator);
                 }
             }, 1, TimeUnit.MILLISECONDS);
         }
@@ -104,11 +110,12 @@ public final class EusGChat extends Plugin implements Listener {
         return config;
     }
 
-    void sendMessageToWebhook(String webhookURL, String playerName, String message) {
+    void sendMessageToWebhook(String webhookURL, String playerName, String message, String server) {
         try {
             String params = "";
             params = "password=" + URLEncoder.encode(PluginConfig.Sending_ConnectionPassword, StandardCharsets.UTF_8.toString());
             params += "&playername=" + URLEncoder.encode(playerName, StandardCharsets.UTF_8.toString());
+            params += "&server=" + URLEncoder.encode(server, StandardCharsets.UTF_8.toString());
             params += "&message=" + URLEncoder.encode(message, StandardCharsets.UTF_8.toString());
             httpPost(webhookURL, params);
         } catch (Exception e) {

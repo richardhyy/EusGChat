@@ -1,14 +1,21 @@
 Settings:
   # If GlobalGhostMode is enabled, public chat will not be visible to the console, and will not be logged.
   GlobalGhostMode: false
+
   ChatFormat:
     ServerIndicator: '&7{server} '
     Message: '{player} &f>&7>&8> &r{message}'
+
+  # Leave it empty if you don't use this function.
+  # Messages match the following expression will be sent to sub-servers.
+  BypassByRegex: '^\d+$'
+
   BypassServer:
     - example
+
   ChatBridge:
     Enabled: false
     ConnectionPassword: 'ChatBridgeSecret'
-    # POST params: password & playername & message
+    # POST params: password & server & playername & message
     Webhooks:
       - 'https://example.com/EusChatBridge/webhook.php'

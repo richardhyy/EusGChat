@@ -33,7 +33,14 @@ else if (empty($_POST["playername"])) {
     die("Empty player name.");
 }
 
-$msg = "**[" . $_POST["playername"] . "]** " . $_POST["message"]; // Change the message format if necessary
+if (empty($_POST["server"])) {
+    $prefix = "";
+}
+else {
+    $prefix = "[" . $_POST["server"] + "] ";
+}
+
+$msg = $prefix . "**[" . $_POST["playername"] . "]** " . $_POST["message"]; // Change the message format if necessary
 
 $json_data = array ('content'=>"$msg");
 $make_json = json_encode($json_data);
